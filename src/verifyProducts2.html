@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="author" content="templatemo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <title>AcPI System</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+</head>
+
+<body>
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">
+                            <img src="assets/images/logo3.png" alt="">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+
+                            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                            <li class="nav-item "><a href="manufacturer2.html" class="nav-link">Manufacturer</a></li>
+                            <li class="nav-item"><a href="seller2.html" class="nav-link">Seller</a></li>
+                            <li class="nav-item"><a href="consumer2.html" class="nav-link">Consumer</a></li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section style="margin-top: 12%" ;>
+        <div class="container">
+            <h2>Verify Products</h2>
+
+            <section>
+                <div class="container-fluid">
+                    <center>
+                        <div id="qr-reader" style="width:300px"></div>
+                        <div id="qr-reader-results"></div>
+                    </center>
+                </div>
+            </section>
+
+            <div class="form-group">
+                <label for="productSN">Product SN:</label>
+                <input  style="margin-top: 5px ;" disabled type="text" class="form-control" id="productSN" placeholder="Enter Product SN"
+                    name="productSN">
+
+                <label style="margin-top: 10px ;" for="consumerCode">Consumer Code</label>
+                <input  style="margin-top: 5px ;" type="text" class="form-control" id="consumerCode" placeholder="Enter Consumer Code"
+                    name="consumerCode">
+            </div>
+
+            <button  style="margin-top: 15px ;" type="submit" class="btn btn-warning btn-register" id="register">Get Product Status</button>
+        </div>
+    </section>
+
+
+    <br />
+    <section>
+        <div class="container">
+            <h2>Is the product sold to cunsumer is fake or not?</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product Verification Result</th>
+                    </tr>
+                </thead>
+                <tbody id="logdata">
+
+                </tbody>
+            </table>
+            <center>
+                <p>Your address is <b id="add"></b></p>
+            </center>
+        </div>
+    </section>
+
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/verifyProduct.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/tabs.js"></script>
+    <script src="assets/js/popup.js"></script>
+    <script src="assets/js/custom.js"></script>
+
+    <script>
+        var decodedText = "Enter Product SN";
+        function docReady(fn) {
+            // see if DOM is already available
+            if (document.readyState === "complete"
+                || document.readyState === "interactive") {
+                // call on next available tick
+                setTimeout(fn, 1);
+            } else {
+                document.addEventListener("DOMContentLoaded", fn);
+            }
+        }
+
+        docReady(function () {
+            var resultContainer = document.getElementById('qr-reader-results');
+            var lastResult, countResults = 0;
+            function onScanSuccess(decodedText, decodedResult) {
+                if (decodedText !== lastResult) {
+                    ++countResults;
+                    lastResult = decodedText;
+                    // Handle on success condition with the decoded message.
+                    var audio = new Audio('beep.wav');
+                    audio.play();
+                    // console.log(`Scan result ${decodedText}`, decodedResult);
+                    document.getElementById('qr-reader-results').innerHTML = decodedText;
+                    document.getElementById("productSN").value = decodedText;
+                    //App.init(decodedText);
+
+                }
+            }
+
+            var html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", { fps: 10, qrbox: 250 });
+            html5QrcodeScanner.render(onScanSuccess);
+        });
+    </script>
+
+
+
+</body>
+
+</html>
